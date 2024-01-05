@@ -2,7 +2,7 @@ package pool
 
 import "log"
 
-var WorkerChannel = make(chan chan Work)
+var WorkerChannel = make(chan Work)
 
 type Collector struct {
 	Work chan Work
@@ -25,7 +25,6 @@ func activateWorker(workerCount int) []Worker {
 		// Workerを生成
 		worker := Worker{
 			ID:            i,
-			Channel:       make(chan Work),
 			WorkerChannel: WorkerChannel,
 			End:           make(chan bool),
 		}
@@ -51,8 +50,7 @@ func createCollectaor(workers []Worker) Collector {
 				}
 				return
 			case work := <-input:
-				worker := <-WorkerChannel // wait for available channel
-				worker <- work            // dispatch work to worker
+				WorkerChannel <- work // dispatch work to worker
 			}
 		}
 	}()

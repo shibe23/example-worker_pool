@@ -13,17 +13,15 @@ type Work struct {
 
 type Worker struct {
 	ID            int
-	WorkerChannel chan chan Work
-	Channel       chan Work
+	WorkerChannel chan Work
 	End           chan bool
 }
 
 func (w *Worker) Start() {
 	go func() {
 		for {
-			w.WorkerChannel <- w.Channel
 			select {
-			case job := <-w.Channel:
+			case job := <-w.WorkerChannel:
 				work.DoWork(job.Job, w.ID)
 			case <-w.End:
 				return
