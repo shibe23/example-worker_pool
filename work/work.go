@@ -10,7 +10,7 @@ import (
 
 var letterRunes = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
 
-func RandStringRunes(n int) string {
+func randStringRunes(n int) string {
 	b := make([]rune, n)
 	for i := range b {
 		b[i] = letterRunes[rand.Intn(len(letterRunes))]
@@ -22,7 +22,7 @@ func CreateJobs(amount int) []string {
 	var jobs []string // job queue
 
 	for i := 0; i < amount; i++ {
-		jobs = append(jobs, RandStringRunes(8))
+		jobs = append(jobs, randStringRunes(8))
 	}
 	return jobs
 }
