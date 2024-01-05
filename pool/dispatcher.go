@@ -10,15 +10,19 @@ type Collector struct {
 }
 
 func StartDispatcher(workerCount int) Collector {
+	workers := activateWorker(workerCount)
+	return createCollectaor(workers)
+}
+
+func activateWorker(workerCount int) []Worker {
 	var i int
 	var workers []Worker
-	input := make(chan Work)
-	end := make(chan bool)
-	collector := Collector{Work: input, End: end}
 
 	for i < workerCount {
 		i++
 		log.Println("Startning worker: ", i)
+
+		// Workerを生成
 		worker := Worker{
 			ID:            i,
 			Channel:       make(chan Work),
@@ -28,6 +32,14 @@ func StartDispatcher(workerCount int) Collector {
 		worker.Start()
 		workers = append(workers, worker)
 	}
+	return workers
+}
+
+// input channelでWorkを受け取り、WorkerChannelに詰め直す
+func createCollectaor(workers []Worker) Collector {
+	input := make(chan Work)
+	end := make(chan bool)
+	collector := Collector{Work: input, End: end}
 
 	// start collector
 	go func() {

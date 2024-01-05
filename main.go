@@ -15,6 +15,7 @@ func main() {
 	collector := pool.StartDispatcher(WORKER_COUNT)
 
 	for i, job := range work.CreateJobs(JOB_COUNT) {
-		collector.Work <- pool.Work{Job: job, ID: i} // Worker(job+ID)を生成してcollectorにchannelとして送信する
+		// JobからWork(job+ID)を生成してcollectorにchannelとして送信する
+		collector.Work <- pool.Work{Job: job, ID: i}
 	}
 }
