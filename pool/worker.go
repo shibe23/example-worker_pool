@@ -17,6 +17,7 @@ type Worker struct {
 	End           chan bool
 }
 
+// Collectorからchan WorkerChannelに送信されたJobを受け取り実行する
 func (w *Worker) Start() {
 	go func() {
 		for {

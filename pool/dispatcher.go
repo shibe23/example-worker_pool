@@ -14,6 +14,8 @@ func StartDispatcher(workerCount int) Collector {
 	return createCollector(workers)
 }
 
+// 定数で指定した数だけWorkerのgoroutineを生成する
+// workerは生成後workersに追加される
 func activateWorker(workerCount int) []Worker {
 	var i int
 	var workers []Worker
@@ -34,7 +36,9 @@ func activateWorker(workerCount int) []Worker {
 	return workers
 }
 
-// input channelでWorkを受け取り、WorkerChannelに詰め直す
+// Collectorを生成する
+// CorellatorはJobを受け取り、Workerに割り当てる役割
+// chan inputでWork(job+ID)構造体を受け取り、chan WorkerChannelに詰め直している
 func createCollector(workers []Worker) Collector {
 	input := make(chan Work)
 	end := make(chan bool)
