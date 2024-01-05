@@ -11,7 +11,7 @@ type Collector struct {
 
 func StartDispatcher(workerCount int) Collector {
 	workers := activateWorker(workerCount)
-	return createCollectaor(workers)
+	return createCollector(workers)
 }
 
 func activateWorker(workerCount int) []Worker {
@@ -35,7 +35,7 @@ func activateWorker(workerCount int) []Worker {
 }
 
 // input channelでWorkを受け取り、WorkerChannelに詰め直す
-func createCollectaor(workers []Worker) Collector {
+func createCollector(workers []Worker) Collector {
 	input := make(chan Work)
 	end := make(chan bool)
 	collector := Collector{Work: input, End: end}
